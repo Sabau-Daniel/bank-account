@@ -7,6 +7,11 @@ export default function PaymentForm({
   onNewPayment, //adds the new payment to the list and changes balance
   direction,
 }) {
+  function roundDown(num, decimals) {
+    const factor = Math.pow(10, decimals);
+    return Math.floor(num * factor) / factor;
+  }
+
   return (
     <div className="payment-form">
       <div className="dual">
@@ -24,8 +29,7 @@ export default function PaymentForm({
           value={amount}
           type="number"
           className="btn"
-          onChange={(e) => setAmount(e.target.value)} // to add min value 0
-          min={0.01}
+          onChange={(e) => setAmount(roundDown(e.target.value, 2))} // to add min value 0
         />
       </div>
       <div className="dual">

@@ -11,7 +11,7 @@ function App() {
   const [showPaymentForm, setShowPaymentForm] = useState(false); //Display or not the PaymentForm
   const [showNewTransaction, setShowNewTransaction] = useState(true); //Display or not the newTransaction button
   const [company, setCompany] = useState("Company"); //Name of the other party
-  const [amount, setAmount] = useState(5); //Transfer amount
+  const [amount, setAmount] = useState(5.0); //Transfer amount
   const [payments, setPayment] = useState([]); //Array to store all the payment objects
   const [balance, setBalance] = useState(200); //Current balance
   const [direction, setDirection] = useState(false); //To/From user
@@ -23,12 +23,17 @@ function App() {
     ]);
     if (direction === "true") {
       // what the fuck is this even
-      setBalance((b) => b + Number(amountItem)); //adds to balance the transaction amount from the paymentform
+      setBalance((b) => roundDown(b + Number(amountItem), 2)); //adds to balance the transaction amount from the paymentform
     } else {
-      setBalance((b) => b - Number(amountItem)); // removes from balance the transaction amount from the paymentform
+      setBalance((b) => roundDown(b - Number(amountItem), 2)); // removes from balance the transaction amount from the paymentform
     }
     setShowPaymentForm(() => false); // removes the second payment form
     setShowNewTransaction(() => true); // adds back the New Transaction button
+  }
+
+  function roundDown(num, decimals) {
+    const factor = Math.pow(10, decimals);
+    return Math.floor(num * factor) / factor;
   }
 
   function handleAddPay() {
